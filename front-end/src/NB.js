@@ -58,7 +58,7 @@ function NB()
 
   async function sendToken()
   {
-    await axios.get('http://localhost:3001/receive_token')
+    await axios.get('https://mern-blog-9kb0.onrender.com/receive_token')
     .then(result => {
     validity_r = result
     console.log(validity_r)
