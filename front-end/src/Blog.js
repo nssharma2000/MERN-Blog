@@ -70,7 +70,7 @@ async function get_comments_response()
 {
 try
 {
-c_response = await axios.get('http://localhost:3001/get_comments')
+c_response = await axios.get('https://mern-blog-9kb0.onrender.com/get_comments')
 console.log("c_response: ", c_response.data)
 setComments(c_response.data)
 setCF(true)
@@ -97,7 +97,7 @@ const add_comment = (e) =>
     }
     else
     {
-    axios.post('http://localhost:3001/add_comment', {username, c_content})
+    axios.post('https://mern-blog-9kb0.onrender.com/add_comment', {username, c_content})
     .then(result => {
       console.log(result);
       console.log(c_content)
