@@ -42,7 +42,7 @@ function Login()
         localStorage.setItem('u_name', String(username))
         localStorage.setItem('pw', String(password))
 
-        
+        localStorage.setItem('token_a', true)
         
         console.log("Username (localstorage): ", localStorage.getItem('u_name'));
         console.log("Password (localstorage): ", localStorage.getItem('pw'));
@@ -50,14 +50,6 @@ function Login()
 
         alert("Logged In!");
        console.log(result)
-
-       let token = result.data.token
-       localStorage.setItem('token', token)
-       console.log("The token is: ", localStorage.getItem('token'))
-
-
-
-       localStorage.setItem('token', token)
 
         
        

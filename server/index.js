@@ -16,15 +16,13 @@ app.use(cors())
 let token;
 
 
-app.post('/receive_token', async (req, res) =>
+app.get('/receive_token', async (req, res) =>
 
 {
-token = req.body.token
-console.log(token)
-
 try
 {
 const decoded = jwt.verify(token, process.env.JWT_SECRET)
+console.log(decoded)
 res.json(decoded)
 }
 catch(error)
@@ -36,8 +34,14 @@ catch(error)
 
 
 
-
-mongoose.connect("mongodb://127.0.0.1:27017/MERNproject")
+try
+{
+mongoose.connect("mongodb+srv://nssharma2000:nama1234@cluster0.j6yc4ab.mongodb.net/MERNproject?retryWrites=true&w=majority&appName=Cluster0")
+}
+catch(error)
+{
+  console.log(error)
+}
 
 
 
@@ -131,11 +135,14 @@ app.post('/login', async (req, res) =>
     if (isMatch) {
       // Generate JWT upon successful login
       const payload = { userId: user._id };
-      token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30m' });
+      token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1m' });
+      console.log("The token is: ", token)
+      res.json()
+
+
 
       
 
-      res.json({ token });
     } else {
       res.status(401).json({ message: 'Invalid username or password' });
     }
@@ -147,6 +154,6 @@ app.post('/login', async (req, res) =>
 
  
 
-app.listen(3001, () => {
+app.listen(3001 || process.env.PORT, () => {
   console.log("Server is running. ")
 })

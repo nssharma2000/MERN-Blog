@@ -14,33 +14,36 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-
+import { send } from 'emailjs-com';
 
 
 function NB()
 {
   let LI = localStorage.getItem('LoggedIn')
 
-  let token = localStorage.getItem('token')
-
-  console.log("Token (navbar): ", token)
-
-  let validity_r;
+  let validity_r = undefined;
 
 
 
+  let token_a = localStorage.getItem('token_a')
 
-  setInterval(() => sendToken(), 30000)
+
+
+  setInterval(sendToken, 10000)
+
+
 
   function checkToken()
   {
-    if(validity_r && validity_r.data.message == 'jwt expired')
+    if((localStorage.getItem('token_a') == 'true') && validity_r.data.message === 'jwt expired')
     {
-      localStorage.setItem('token', undefined)
-      alert('Expired! ', localStorage.getItem('token'))
+      alert('Expired!')
+      console.log("Expired")
+
+      localStorage.setItem('token_a', false)
       LogOut()
     }
 
@@ -49,16 +52,19 @@ function NB()
   }
 
 
+
+  
+
+
   async function sendToken()
   {
-    if(token)
-    {
-    axios.post('http://localhost:3001/receive_token', { token })
+    await axios.get('http://localhost:3001/receive_token')
     .then(result => {
     validity_r = result
-    })
+    console.log(validity_r)
     checkToken()
-    }
+    return
+    })
   }
 
 
@@ -106,10 +112,17 @@ function NB()
                   
 
         
-        { LoggedIn ? <div className="text-white fs-5 mx-auto px-4 text-nowrap">Welcome, {localStorage.getItem('u_name')} </div> : null }
+        { LoggedIn ?
+          <>
+          <div className="text-white fs-5 mx-auto px-4 text-nowrap">Welcome, {localStorage.getItem('u_name')} </div>
         <Link to="/register"><Button variant="primary text-nowrap me-2">Register</Button></Link>
+        <Button variant="danger text-nowrap me-2" onClick={LogOut}>Log out</Button>
+          </>
+        :
+        <>
+        <Link to="/register"><Button variant="primary text-nowrap me-2">Register</Button></Link> 
         <Link to="/login"><Button variant="primary text-nowrap me-2">Log In</Button></Link>
-        { LoggedIn ? <Button variant="danger text-nowrap me-2" onClick={LogOut}>Log out</Button> : null }
+        </> }
       </Navbar>
 
     
