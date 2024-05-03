@@ -135,7 +135,7 @@ app.post('/login', async (req, res) =>
     if (isMatch) {
       // Generate JWT upon successful login
       const payload = { userId: user._id };
-      token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1m' });
+      token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '5m' });
       console.log("The token is: ", token)
       res.json()
 
